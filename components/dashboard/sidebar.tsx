@@ -12,7 +12,8 @@ import {
   BarChart3, 
   LogOut,
   Menu,
-  X
+  X,
+  Upload
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
@@ -29,8 +30,8 @@ const subscriberLinks = [
 
 const senderLinks = [
   { href: "/dashboard/sender", label: "Overview", icon: Home },
-  { href: "/dashboard/sender#subscribers", label: "Subscribers", icon: Users },
-  { href: "/dashboard/sender#campaigns", label: "Campaigns", icon: Mail },
+  { href: "/dashboard/sender/campaigns", label: "Campaigns", icon: Mail },
+  { href: "/dashboard/sender/import", label: "Import Subscribers", icon: Upload },
   { href: "/dashboard/sender#analytics", label: "Analytics", icon: BarChart3 },
 ]
 

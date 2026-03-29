@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Users, Mail, BarChart3, Download, Plus } from "lucide-react"
+import Link from "next/link"
 
 interface Subscriber {
   id: string
@@ -46,7 +47,7 @@ export function SenderDashboardContent({
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `trustloop-compliance-report-${new Date().toISOString().split("T")[0]}.csv`
+    a.download = `bloom-compliance-report-${new Date().toISOString().split("T")[0]}.csv`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -115,9 +116,11 @@ export function SenderDashboardContent({
             <Download className="h-4 w-4 mr-2" />
             Export Compliance Report
           </Button>
-          <Button className="bg-primary hover:bg-[#A34D20] text-primary-foreground">
-            <Plus className="h-4 w-4 mr-2" />
-            Create Campaign
+          <Button asChild className="bg-primary hover:bg-[#A34D20] text-primary-foreground">
+            <Link href="/dashboard/sender/campaigns/new">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Campaign
+            </Link>
           </Button>
         </div>
 
