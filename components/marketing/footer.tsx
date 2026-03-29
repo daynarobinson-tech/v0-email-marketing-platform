@@ -7,7 +7,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
             <Link href="/" className="text-lg font-semibold text-foreground">
-              TrustLoop
+              Bloom
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
               Email marketing that rewards engagement.
@@ -30,7 +30,7 @@ export function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} TrustLoop. All rights reserved.
+            &copy; {new Date().getFullYear()} Bloom. All rights reserved.
           </p>
         </div>
       </div>

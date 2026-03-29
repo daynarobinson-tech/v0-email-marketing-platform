@@ -6,7 +6,7 @@ import './globals.css'
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: 'TrustLoop - Email Marketing with Rewards',
+  title: 'Bloom - Email Marketing with Rewards',
   description: 'The email platform your subscribers actually want to open. Earn real rewards for engagement.',
   generator: 'v0.app',
   icons: {

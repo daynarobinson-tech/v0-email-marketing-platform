@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* TrustLoop Color Palette */
+  /* Bloom Color Palette */
   --background: #FAFAF8;
   --foreground: #1C1C1A;
   --card: #FFFFFF;

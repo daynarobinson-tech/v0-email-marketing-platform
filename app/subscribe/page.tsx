@@ -94,7 +94,7 @@ export default function SubscribePage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="text-xl font-semibold text-foreground">
-            TrustLoop
+            Bloom
           </Link>
           <h1 className="mt-6 text-2xl font-semibold text-foreground">
             Join the list

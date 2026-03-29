@@ -75,7 +75,7 @@ export function Sidebar({ type }: SidebarProps) {
         <div className="flex flex-col h-full">
           <div className="p-6 border-b border-border">
             <Link href="/" className="text-xl font-semibold text-foreground">
-              TrustLoop
+              Bloom
             </Link>
             <p className="mt-1 text-xs text-muted-foreground capitalize">
               {type} Dashboard
