@@ -113,7 +113,7 @@ export default function LoginPage() {
             </Link>
           </p>
           <p className="text-sm text-muted-foreground">
-            <Link href="/dashboard/sender" className="text-primary hover:text-[#A34D20]">
+            <Link href="/demo/sender" className="text-primary hover:text-[#A34D20]">
               Sender Dashboard (Demo)
             </Link>
           </p>

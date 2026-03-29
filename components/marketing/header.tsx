@@ -24,6 +24,9 @@ export function Header() {
             <Link href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Pricing
             </Link>
+            <Link href="/demo/sender" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Demo
+            </Link>
             <Link href="/auth/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Log In
             </Link>
@@ -51,6 +54,9 @@ export function Header() {
               </Link>
               <Link href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Pricing
+              </Link>
+              <Link href="/demo/sender" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                Demo
               </Link>
               <Link href="/auth/login" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Log In
