@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS subscribers (
   consent BOOLEAN DEFAULT FALSE,
   token_balance INTEGER DEFAULT 0,
   last_active TIMESTAMPTZ DEFAULT NOW(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL
+  user_id UUID
 );
 
 -- Create events table
