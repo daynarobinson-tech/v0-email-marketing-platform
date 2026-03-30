@@ -11,6 +11,8 @@ interface Subscriber {
   token_balance: number
   created_at: string
   last_active: string
+  is_verified?: boolean
+  flow_address?: string
 }
 
 interface SenderDashboardContentProps {
@@ -19,6 +21,8 @@ interface SenderDashboardContentProps {
     totalSubscribers: number
     totalEmailsSent: number
     averageOpenRate: number
+    verifiedHumans: number
+    treasuryBalance: number
   }
 }
 
@@ -93,7 +97,7 @@ export function SenderDashboardContent({
             </div>
           </div>
 
-          <div className="p-6 rounded-lg border border-border bg-card sm:col-span-2 lg:col-span-1">
+          <div className="p-6 rounded-lg border border-border bg-card">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                 <BarChart3 className="h-6 w-6 text-primary" />
@@ -101,6 +105,40 @@ export function SenderDashboardContent({
               <div>
                 <p className="text-sm text-muted-foreground">Avg. Open Rate</p>
                 <p className="text-2xl font-semibold text-foreground">{stats.averageOpenRate}%</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-lg border border-border bg-card">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-[#4A7C59]/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-[#4A7C59]" />
+                </div>
+                <div>
+                  <p className="text-sm text-[#6B6B67]">Verified Humans</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-2xl font-semibold text-[#1C1C1A]">{stats.verifiedHumans}</p>
+                    <span className="text-xs bg-[#4A7C59]/10 text-[#4A7C59] px-2 py-0.5 rounded-full font-medium mt-1">
+                      World ID
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-lg border border-border bg-card sm:col-span-2 lg:col-span-2">
+             <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-lg bg-[#16ff99]/20 flex items-center justify-center">
+                <span className="text-xl">🌊</span>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Flow Treasury Balance (Abstracted)</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-2xl font-semibold text-foreground">{stats.treasuryBalance.toLocaleString()}</p>
+                  <span className="text-sm text-muted-foreground mt-1">Tokens Available</span>
+                </div>
               </div>
             </div>
           </div>
@@ -140,6 +178,9 @@ export function SenderDashboardContent({
                     Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Email
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -165,6 +206,28 @@ export function SenderDashboardContent({
                     <tr key={subscriber.id} className="hover:bg-muted/50 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">
                         {subscriber.first_name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-2">
+                          {subscriber.is_verified ? (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-[#4A7C59]/10 text-[#4A7C59] rounded-full" title="Verified Human">
+                              W
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded-full" title="Unverified">
+                              -
+                            </span>
+                          )}
+                          {subscriber.flow_address ? (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-[#16ff99]/20 text-[#00a65d] rounded-full" title="Wallet Connected">
+                              🌊
+                            </span>
+                          ) : (
+                             <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded-full" title="No Wallet">
+                              -
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                         {subscriber.email}

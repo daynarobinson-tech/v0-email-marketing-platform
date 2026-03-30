@@ -21,6 +21,10 @@ export default async function SenderDashboardPage() {
   const totalEmailsSent = campaigns?.reduce((sum, c) => sum + (c.emails_sent || 0), 0) || 0
   const totalOpens = campaigns?.reduce((sum, c) => sum + (c.opens || 0), 0) || 0
   const averageOpenRate = totalEmailsSent > 0 ? Math.round((totalOpens / totalEmailsSent) * 100) : 0
+  
+  // Web3 Gamification Stats
+  const verifiedHumans = subscribers?.filter(s => s.is_verified).length || 0
+  const treasuryBalance = 50000 // Mock platform-abstracted token treasury for the Sender
 
   return (
     <div className="min-h-screen bg-background">
@@ -32,6 +36,8 @@ export default async function SenderDashboardPage() {
             totalSubscribers,
             totalEmailsSent,
             averageOpenRate,
+            verifiedHumans,
+            treasuryBalance
           }}
         />
       </main>

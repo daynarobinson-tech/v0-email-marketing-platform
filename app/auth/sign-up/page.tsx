@@ -25,7 +25,7 @@ export default function SignUpPage() {
     try {
       const supabase = createClient()
       
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -39,6 +39,22 @@ export default function SignUpPage() {
 
       if (signUpError) {
         setError(signUpError.message)
+        return
+      }
+
+      // Automatically create the subscriber profile so their dashboard loads
+      if (data?.user) {
+        await supabase.from("subscribers").insert({
+          user_id: data.user.id,
+          email: email,
+          first_name: firstName,
+          token_balance: 0,
+        })
+      }
+
+      // If email confirmation is disabled, Supabase instantly returns a session.
+      if (data?.session) {
+        router.push("/dashboard/subscriber")
         return
       }
 

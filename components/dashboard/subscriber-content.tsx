@@ -4,6 +4,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Coins, Mail, MousePointer, UserPlus } from "lucide-react"
 import type { User } from "@supabase/supabase-js"
+import { FlowConnect } from "@/components/flow-connect"
+import { WorldIDVerify } from "@/components/world-id-verify"
 
 interface Subscriber {
   id: string
@@ -11,6 +13,8 @@ interface Subscriber {
   first_name: string
   token_balance: number
   created_at: string
+  flow_address?: string
+  is_verified?: boolean
 }
 
 interface Event {
@@ -39,6 +43,8 @@ export function SubscriberDashboardContent({
 }: SubscriberDashboardContentProps) {
   const firstName = subscriber?.first_name || user.user_metadata?.first_name || "Subscriber"
   const tokenBalance = subscriber?.token_balance || 0
+  const isVerified = subscriber?.is_verified || false
+  const flowAddress = subscriber?.flow_address || null
 
   return (
     <div className="p-6 lg:p-8">
@@ -102,6 +108,20 @@ export function SubscriberDashboardContent({
             <Link href="/redeem">Redeem Rewards</Link>
           </Button>
         </div>
+
+        {/* Web3 & Identity Section */}
+        {subscriber && (
+          <div className="mb-10 grid md:grid-cols-2 gap-6">
+            <div className="flex flex-col">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Web3 Rewards</h2>
+              <FlowConnect subscriberId={subscriber.id} existingAddress={flowAddress} />
+            </div>
+            <div className="flex flex-col mt-4 md:mt-0">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Identity Verification</h2>
+              <WorldIDVerify subscriberId={subscriber.id} isVerified={isVerified} />
+            </div>
+          </div>
+        )}
 
         {/* Activity Feed */}
         <div id="activity" className="p-6 rounded-lg border border-border bg-card">

@@ -16,6 +16,7 @@ export default function NewCampaignPage() {
   const [subject, setSubject] = useState("")
   const [previewText, setPreviewText] = useState("")
   const [bodyHtml, setBodyHtml] = useState("")
+  const [rewardAmount, setRewardAmount] = useState(10)
   const [saving, setSaving] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
   const router = useRouter()
@@ -128,6 +129,38 @@ export default function NewCampaignPage() {
                   placeholder="Text that appears after the subject line"
                   className="border-[#E8E6E0] focus:ring-[#C45C26]"
                 />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-[#E8E6E0] bg-white">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <span className="text-xl">💰</span>
+                <CardTitle className="text-[#1C1C1A]">Treasury Gamification</CardTitle>
+              </div>
+              <CardDescription className="text-[#6B6B67]">
+                Allocate platform tokens from your Abstracted Treasury to reward subscribers for interacting with this email.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-[#16ff99]/10 border border-[#16ff99]/20 rounded-lg">
+                  <div>
+                    <p className="font-medium text-[#1C1C1A]">Tokens Per Link Click</p>
+                    <p className="text-sm text-[#6B6B67]">How many tokens a user earns for engaging</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      type="number" 
+                      min="0" 
+                      value={rewardAmount}
+                      onChange={(e) => setRewardAmount(Number(e.target.value))}
+                      className="w-24 bg-white border-[#E8E6E0]" 
+                    />
+                    <span className="text-sm font-medium text-[#1C1C1A]">Tokens</span>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

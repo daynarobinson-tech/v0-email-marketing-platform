@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Gift, Coins, Coffee, ShoppingBag, Ticket, ArrowLeft, CheckCircle } from "lucide-react"
+import { Gift, Coins, Coffee, ShoppingBag, Ticket, ArrowLeft, CheckCircle, ShieldCheck } from "lucide-react"
 
 interface Reward {
   id: string
@@ -19,6 +19,8 @@ interface Subscriber {
   id: string
   token_balance: number
   first_name: string
+  flow_address?: string
+  is_verified?: boolean
 }
 
 const rewards: Reward[] = [
@@ -83,7 +85,7 @@ export default function RedeemPage() {
 
       const { data } = await supabase
         .from("subscribers")
-        .select("id, token_balance, first_name")
+        .select("id, token_balance, first_name, flow_address, is_verified")
         .eq("user_id", user.id)
         .single()
 
@@ -177,11 +179,31 @@ export default function RedeemPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {rewards.map((reward) => {
-              const canAfford = subscriber.token_balance >= reward.cost
-              const isRedeeming = redeeming === reward.id
-              const wasRedeemed = redeemed === reward.id
+          <div className="space-y-6">
+            {(!subscriber.is_verified || !subscriber.flow_address) && (
+              <div className="p-4 bg-orange-50 border border-orange-200 text-orange-800 rounded-lg flex items-start gap-3 mb-6">
+                <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Action Required</h3>
+                  <p className="text-sm mt-1">
+                    To prevent fraud and ensure you receive your rewards securely, you must 
+                    connect your Flow wallet and verify your World ID identity on the dashboard before redeeming.
+                  </p>
+                  <Button asChild variant="outline" size="sm" className="mt-3 bg-white border-orange-200 text-orange-800 hover:bg-orange-100">
+                    <Link href="/dashboard/subscriber">Go to Dashboard to Verify</Link>
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {rewards.map((reward) => {
+                const canAfford = subscriber.token_balance >= reward.cost
+                const canRedeem = canAfford && subscriber.is_verified && subscriber.flow_address
+                const isRedeeming = redeeming === reward.id
+                const wasRedeemed = redeemed === reward.id
 
               return (
                 <Card
@@ -212,11 +234,11 @@ export default function RedeemPage() {
                   <CardContent>
                     <Button
                       onClick={() => handleRedeem(reward)}
-                      disabled={!canAfford || isRedeeming}
+                      disabled={!canRedeem || isRedeeming}
                       className={`w-full ${
                         wasRedeemed
                           ? "bg-[#4A7C59] hover:bg-[#4A7C59]"
-                          : canAfford
+                          : canRedeem
                           ? "bg-[#C45C26] hover:bg-[#A34D20]"
                           : "bg-[#E8E6E0]"
                       } text-white`}
@@ -228,6 +250,8 @@ export default function RedeemPage() {
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Redeemed!
                         </>
+                      ) : (!subscriber.is_verified || !subscriber.flow_address) ? (
+                        "Verification Required"
                       ) : canAfford ? (
                         "Redeem"
                       ) : (
@@ -239,6 +263,7 @@ export default function RedeemPage() {
               )
             })}
           </div>
+        </div>
         )}
 
         {/* Info Card */}

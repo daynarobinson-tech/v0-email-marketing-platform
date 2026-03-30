@@ -37,7 +37,6 @@ export default function SubscribePage() {
         .insert({
           email,
           first_name: firstName,
-          consent: true,
           token_balance: 10, // Starting bonus
         })
         .select()

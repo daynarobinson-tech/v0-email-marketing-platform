@@ -10,20 +10,18 @@ import {
   Plus,
   Upload,
   Eye,
-  MousePointerClick,
   TrendingUp
 } from "lucide-react"
 
-// Sample data for demo
 const sampleSubscribers = [
-  { id: "1", first_name: "Sarah", email: "sarah.johnson@email.com", token_balance: 145, created_at: "2024-01-15T10:30:00Z", last_active: "2024-03-28T14:22:00Z" },
-  { id: "2", first_name: "Michael", email: "m.chen@company.io", token_balance: 230, created_at: "2024-01-22T08:15:00Z", last_active: "2024-03-29T09:45:00Z" },
-  { id: "3", first_name: "Emma", email: "emma.wilson@startup.co", token_balance: 85, created_at: "2024-02-03T16:45:00Z", last_active: "2024-03-27T11:30:00Z" },
-  { id: "4", first_name: "James", email: "james.miller@tech.dev", token_balance: 320, created_at: "2024-02-14T12:00:00Z", last_active: "2024-03-29T16:10:00Z" },
-  { id: "5", first_name: "Olivia", email: "olivia.r@design.studio", token_balance: 175, created_at: "2024-02-28T09:20:00Z", last_active: "2024-03-26T13:55:00Z" },
-  { id: "6", first_name: "William", email: "will.brown@agency.com", token_balance: 95, created_at: "2024-03-05T14:30:00Z", last_active: "2024-03-28T10:20:00Z" },
-  { id: "7", first_name: "Sophia", email: "sophia.lee@brand.io", token_balance: 210, created_at: "2024-03-12T11:00:00Z", last_active: "2024-03-29T08:15:00Z" },
-  { id: "8", first_name: "Lucas", email: "lucas.garcia@media.co", token_balance: 55, created_at: "2024-03-20T15:45:00Z", last_active: "2024-03-25T17:30:00Z" },
+  { id: "1", first_name: "Sarah", email: "sarah.johnson@email.com", token_balance: 145, created_at: "2024-01-15T10:30:00Z", last_active: "2024-03-28T14:22:00Z", is_verified: true, flow_address: "0x0123456789abcde" },
+  { id: "2", first_name: "Michael", email: "m.chen@company.io", token_balance: 230, created_at: "2024-01-22T08:15:00Z", last_active: "2024-03-29T09:45:00Z", is_verified: true, flow_address: "0xf2331456789abcd" },
+  { id: "3", first_name: "Emma", email: "emma.wilson@startup.co", token_balance: 85, created_at: "2024-02-03T16:45:00Z", last_active: "2024-03-27T11:30:00Z", is_verified: false, flow_address: null },
+  { id: "4", first_name: "James", email: "james.miller@tech.dev", token_balance: 320, created_at: "2024-02-14T12:00:00Z", last_active: "2024-03-29T16:10:00Z", is_verified: true, flow_address: "0x4443456789abcde" },
+  { id: "5", first_name: "Olivia", email: "olivia.r@design.studio", token_balance: 175, created_at: "2024-02-28T09:20:00Z", last_active: "2024-03-26T13:55:00Z", is_verified: false, flow_address: null },
+  { id: "6", first_name: "William", email: "will.brown@agency.com", token_balance: 95, created_at: "2024-03-05T14:30:00Z", last_active: "2024-03-28T10:20:00Z", is_verified: true, flow_address: null },
+  { id: "7", first_name: "Sophia", email: "sophia.lee@brand.io", token_balance: 210, created_at: "2024-03-12T11:00:00Z", last_active: "2024-03-29T08:15:00Z", is_verified: true, flow_address: "0x8923456789abcde" },
+  { id: "8", first_name: "Lucas", email: "lucas.garcia@media.co", token_balance: 55, created_at: "2024-03-20T15:45:00Z", last_active: "2024-03-25T17:30:00Z", is_verified: false, flow_address: null },
 ]
 
 const sampleCampaigns = [
@@ -39,6 +37,9 @@ export default function DemoSenderPage() {
   const totalClicks = sampleCampaigns.reduce((sum, c) => sum + c.clicks, 0)
   const averageOpenRate = totalEmailsSent > 0 ? Math.round((totalOpens / totalEmailsSent) * 100) : 0
   const clickRate = totalOpens > 0 ? Math.round((totalClicks / totalOpens) * 100) : 0
+  
+  const verifiedHumans = sampleSubscribers.filter(s => s.is_verified).length
+  const treasuryBalance = 50000
 
   const handleExportCSV = () => {
     const headers = ["Name", "Email", "Join Date", "Token Balance", "Last Active"]
@@ -118,13 +119,35 @@ export default function DemoSenderPage() {
           </div>
 
           <div className="p-6 rounded-lg border border-border bg-card">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
-                <MousePointerClick className="h-6 w-6 text-secondary" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-lg bg-[#4A7C59]/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-[#4A7C59]" />
+                </div>
+                <div>
+                  <p className="text-sm text-[#6B6B67]">Verified Humans</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-2xl font-semibold text-[#1C1C1A]">{verifiedHumans}</p>
+                    <span className="text-xs bg-[#4A7C59]/10 text-[#4A7C59] px-2 py-0.5 rounded-full font-medium mt-1">
+                      World ID
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-lg border border-border bg-card sm:col-span-2 lg:col-span-4">
+             <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-lg bg-[#16ff99]/20 flex items-center justify-center">
+                <span className="text-xl">🌊</span>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Click Rate</p>
-                <p className="text-2xl font-semibold text-foreground">{clickRate}%</p>
+                <p className="text-sm text-muted-foreground">Flow Treasury Balance (Abstracted)</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-2xl font-semibold text-foreground">{treasuryBalance.toLocaleString()}</p>
+                  <span className="text-sm text-muted-foreground mt-1">Tokens Available</span>
+                </div>
               </div>
             </div>
           </div>
@@ -218,6 +241,7 @@ export default function DemoSenderPage() {
               <thead className="bg-muted">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Name</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Email</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Join Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Token Balance</th>
@@ -228,6 +252,28 @@ export default function DemoSenderPage() {
                 {sampleSubscribers.map((subscriber) => (
                   <tr key={subscriber.id} className="hover:bg-muted/50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-foreground">{subscriber.first_name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex gap-2">
+                          {subscriber.is_verified ? (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-[#4A7C59]/10 text-[#4A7C59] rounded-full" title="Verified Human">
+                              W
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded-full" title="Unverified">
+                              -
+                            </span>
+                          )}
+                          {subscriber.flow_address ? (
+                            <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-[#16ff99]/20 text-[#00a65d] rounded-full" title="Wallet Connected">
+                              🌊
+                            </span>
+                          ) : (
+                             <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded-full" title="No Wallet">
+                              -
+                            </span>
+                          )}
+                        </div>
+                      </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">{subscriber.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                       {new Date(subscriber.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
