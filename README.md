@@ -275,14 +275,9 @@ To maximize Bloom's chance of winning and to strengthen it beyond demo stage, th
 - complete sender-side top-up and treasury management flows
 - add explicit blockchain event recording for consent and token issuance
 
-## Best Strategic Positioning For Judging
+## Bloom is not "email with crypto"  but "a better collaboration protocol between brands and subscribers"
 
-If Bloom is presented for maximum competitive strength, the emphasis should be:
-
-- not "email with crypto"
-- but "a better collaboration protocol between brands and subscribers"
-
-The winning angle is that Bloom uses programmable incentives to repair a broken relationship:
+Bloom uses programmable incentives to repair a broken relationship between brands and subscribers:
 
 - attention becomes measurable
 - consent becomes auditable
