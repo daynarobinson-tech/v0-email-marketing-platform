@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Gift, Coins, Coffee, ShoppingBag, Ticket, ArrowLeft, CheckCircle, ShieldCheck } from "lucide-react"
+import { Gift, Coins, ShoppingBag, ArrowLeft, CheckCircle, ShieldCheck, BadgePercent, Truck, Sparkles } from "lucide-react"
 
 interface Reward {
   id: string
@@ -25,44 +25,44 @@ interface Subscriber {
 
 const rewards: Reward[] = [
   {
-    id: "coffee",
-    name: "Free Coffee",
-    description: "Redeem for a free coffee at participating cafes",
-    cost: 100,
-    icon: <Coffee className="w-6 h-6" />,
+    id: "discount-5",
+    name: "5% Off Your Next Order",
+    description: "Use your tokens for a small discount on a future purchase from this brand.",
+    cost: 25,
+    icon: <BadgePercent className="w-6 h-6" />,
   },
   {
     id: "discount-10",
-    name: "10% Discount",
-    description: "Get 10% off your next purchase",
-    cost: 50,
+    name: "10% Off Your Next Order",
+    description: "Turn email engagement into a stronger discount inside the sender's storefront.",
+    cost: 75,
     icon: <ShoppingBag className="w-6 h-6" />,
   },
   {
-    id: "discount-25",
-    name: "25% Discount",
-    description: "Get 25% off your next purchase",
+    id: "store-credit",
+    name: "$15 Store Credit",
+    description: "Apply credit toward an eligible purchase within the sender's ecosystem.",
     cost: 150,
-    icon: <ShoppingBag className="w-6 h-6" />,
-  },
-  {
-    id: "raffle",
-    name: "Raffle Entry",
-    description: "Enter the monthly prize raffle",
-    cost: 25,
-    icon: <Ticket className="w-6 h-6" />,
-  },
-  {
-    id: "gift-card-10",
-    name: "$10 Gift Card",
-    description: "A $10 gift card to use on anything",
-    cost: 200,
     icon: <Gift className="w-6 h-6" />,
   },
   {
-    id: "gift-card-25",
-    name: "$25 Gift Card",
-    description: "A $25 gift card to use on anything",
+    id: "free-shipping",
+    name: "Free Shipping Unlock",
+    description: "Redeem tokens to waive shipping on your next qualifying order.",
+    cost: 100,
+    icon: <Truck className="w-6 h-6" />,
+  },
+  {
+    id: "vip-access",
+    name: "VIP Early Access",
+    description: "Get early access to a launch, drop, or limited offer from this sender.",
+    cost: 200,
+    icon: <Sparkles className="w-6 h-6" />,
+  },
+  {
+    id: "premium-bundle",
+    name: "Premium Bundle Upgrade",
+    description: "Trade tokens for a higher-value discount or premium add-on on a future purchase.",
     cost: 450,
     icon: <Gift className="w-6 h-6" />,
   },
@@ -156,7 +156,7 @@ export default function RedeemPage() {
           </Link>
           <div className="flex-1">
             <h1 className="text-2xl font-semibold text-[#1C1C1A]">Redeem Rewards</h1>
-            <p className="text-[#6B6B67]">Spend your tokens on exclusive rewards</p>
+            <p className="text-[#6B6B67]">Turn your engagement tokens into discounts and perks from this sender</p>
           </div>
           {subscriber && (
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-[#E8E6E0]">
@@ -279,7 +279,7 @@ export default function RedeemPage() {
                 </div>
                 <div>
                   <p className="font-medium text-[#1C1C1A]">Sign Up</p>
-                  <p className="text-sm text-[#6B6B67]">Welcome bonus for joining</p>
+                  <p className="text-sm text-[#6B6B67]">Receive a welcome token bonus when you join the list</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -288,7 +288,7 @@ export default function RedeemPage() {
                 </div>
                 <div>
                   <p className="font-medium text-[#1C1C1A]">Open Email</p>
-                  <p className="text-sm text-[#6B6B67]">Every time you open an email</p>
+                  <p className="text-sm text-[#6B6B67]">Earn tokens each time you open a sender email</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -297,7 +297,7 @@ export default function RedeemPage() {
                 </div>
                 <div>
                   <p className="font-medium text-[#1C1C1A]">Click Link</p>
-                  <p className="text-sm text-[#6B6B67]">Engage with email content</p>
+                  <p className="text-sm text-[#6B6B67]">Earn more by clicking through to offers and products</p>
                 </div>
               </div>
             </div>

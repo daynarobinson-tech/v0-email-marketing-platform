@@ -1,7 +1,10 @@
 "use client"
 
+import { useMemo } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { SenderProgramSettings } from "@/components/demo/sender-program-settings"
+import { useDemoSenderConfig } from "@/hooks/use-demo-sender-config"
 import { 
   Users, 
   Mail, 
@@ -31,15 +34,22 @@ const sampleCampaigns = [
 ]
 
 export default function DemoSenderPage() {
+  const { config, setConfig, resetConfig } = useDemoSenderConfig()
   const totalSubscribers = sampleSubscribers.length
   const totalEmailsSent = sampleCampaigns.reduce((sum, c) => sum + c.emails_sent, 0)
   const totalOpens = sampleCampaigns.reduce((sum, c) => sum + c.opens, 0)
   const totalClicks = sampleCampaigns.reduce((sum, c) => sum + c.clicks, 0)
   const averageOpenRate = totalEmailsSent > 0 ? Math.round((totalOpens / totalEmailsSent) * 100) : 0
-  const clickRate = totalOpens > 0 ? Math.round((totalClicks / totalOpens) * 100) : 0
   
   const verifiedHumans = sampleSubscribers.filter(s => s.is_verified).length
-  const treasuryBalance = 50000
+  const treasuryBalance = config.startingAllocation + config.topUpTokens
+  const projectedDistributedTokens = useMemo(() => {
+    return (
+      totalSubscribers * config.interactionRewards.signUp +
+      totalOpens * config.interactionRewards.emailOpen +
+      totalClicks * config.interactionRewards.linkClick
+    )
+  }, [config.interactionRewards, totalClicks, totalOpens, totalSubscribers])
 
   const handleExportCSV = () => {
     const headers = ["Name", "Email", "Join Date", "Token Balance", "Last Active"]
@@ -76,7 +86,7 @@ export default function DemoSenderPage() {
             Sender Dashboard
           </h1>
           <p className="mt-1 text-muted-foreground">
-            Manage your subscribers and campaigns
+            Manage your subscribers, token economics, and campaign rewards
           </p>
         </div>
 
@@ -148,9 +158,17 @@ export default function DemoSenderPage() {
                   <p className="text-2xl font-semibold text-foreground">{treasuryBalance.toLocaleString()}</p>
                   <span className="text-sm text-muted-foreground mt-1">Tokens Available</span>
                 </div>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Includes {config.startingAllocation.toLocaleString()} allocated at signup and{" "}
+                  {config.topUpTokens.toLocaleString()} added later.
+                </p>
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="mb-8">
+          <SenderProgramSettings config={config} onChange={setConfig} onReset={resetConfig} />
         </div>
 
         {/* Quick Actions */}
@@ -306,7 +324,7 @@ export default function DemoSenderPage() {
           
           <div className="grid sm:grid-cols-3 gap-6">
             <div className="text-center p-4 rounded-lg bg-muted/50">
-              <p className="text-3xl font-semibold text-foreground">1,315</p>
+              <p className="text-3xl font-semibold text-foreground">{projectedDistributedTokens.toLocaleString()}</p>
               <p className="text-sm text-muted-foreground mt-1">Total Tokens Distributed</p>
             </div>
             <div className="text-center p-4 rounded-lg bg-muted/50">
@@ -314,8 +332,8 @@ export default function DemoSenderPage() {
               <p className="text-sm text-muted-foreground mt-1">Active Subscribers</p>
             </div>
             <div className="text-center p-4 rounded-lg bg-muted/50">
-              <p className="text-3xl font-semibold text-foreground">24</p>
-              <p className="text-sm text-muted-foreground mt-1">Rewards Redeemed</p>
+              <p className="text-3xl font-semibold text-foreground">{config.redemptionOptions.length}</p>
+              <p className="text-sm text-muted-foreground mt-1">Active Redemption Offers</p>
             </div>
           </div>
         </div>

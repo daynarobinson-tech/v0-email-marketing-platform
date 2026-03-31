@@ -1,14 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Save, Send, Eye, CheckCircle } from "lucide-react"
+import { ArrowLeft, Save, Send, Eye, CheckCircle, Coins, Gift } from "lucide-react"
 import Link from "next/link"
+import { useDemoSenderConfig } from "@/hooks/use-demo-sender-config"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,14 +21,23 @@ import {
 } from "@/components/ui/alert-dialog"
 
 export default function DemoNewCampaignPage() {
+  const { config, isLoaded } = useDemoSenderConfig()
   const [name, setName] = useState("")
   const [subject, setSubject] = useState("")
   const [previewText, setPreviewText] = useState("")
   const [bodyHtml, setBodyHtml] = useState("")
+  const [openReward, setOpenReward] = useState(5)
+  const [clickReward, setClickReward] = useState(10)
   const [saving, setSaving] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [successMessage, setSuccessMessage] = useState("")
   const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoaded) return
+    setOpenReward(config.interactionRewards.emailOpen)
+    setClickReward(config.interactionRewards.linkClick)
+  }, [config.interactionRewards.emailOpen, config.interactionRewards.linkClick, isLoaded])
 
   const handleSave = async (status: "draft" | "sent" = "draft") => {
     setSaving(true)
@@ -36,7 +46,9 @@ export default function DemoNewCampaignPage() {
     await new Promise(resolve => setTimeout(resolve, 800))
     
     if (status === "sent") {
-      setSuccessMessage("Campaign sent successfully! In demo mode, no emails are actually sent.")
+      setSuccessMessage(
+        `Campaign sent successfully! Demo rewards are set to ${openReward} tokens per open and ${clickReward} tokens per click.`
+      )
     } else {
       setSuccessMessage("Draft saved successfully!")
     }
@@ -54,7 +66,7 @@ export default function DemoNewCampaignPage() {
         </Link>
         <div className="flex-1">
           <h1 className="text-2xl font-semibold text-foreground">Create Campaign</h1>
-          <p className="text-muted-foreground mt-1">Design your email with the visual editor</p>
+          <p className="text-muted-foreground mt-1">Design your email and define the token incentives tied to engagement</p>
         </div>
         <div className="flex items-center gap-3">
           <Button
@@ -123,6 +135,76 @@ export default function DemoNewCampaignPage() {
 
           <Card className="border border-border bg-card">
             <CardHeader>
+              <div className="flex items-center gap-2">
+                <Coins className="h-5 w-5 text-primary" />
+                <CardTitle className="text-foreground">Interaction Rewards</CardTitle>
+              </div>
+              <CardDescription className="text-muted-foreground">
+                Set how many platform tokens this email awards for each engagement action.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="campaignOpenReward" className="text-foreground">Tokens Per Open</Label>
+                  <Input
+                    id="campaignOpenReward"
+                    type="number"
+                    min="0"
+                    value={openReward}
+                    onChange={(e) => setOpenReward(Number(e.target.value) || 0)}
+                    className="border-border focus:ring-primary"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="campaignClickReward" className="text-foreground">Tokens Per Click</Label>
+                  <Input
+                    id="campaignClickReward"
+                    type="number"
+                    min="0"
+                    value={clickReward}
+                    onChange={(e) => setClickReward(Number(e.target.value) || 0)}
+                    className="border-border focus:ring-primary"
+                  />
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+                Default sender program settings currently award {config.interactionRewards.signUp} tokens on signup,
+                {" "}{config.interactionRewards.emailOpen} per open, and {config.interactionRewards.linkClick} per click.
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border border-border bg-card">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Gift className="h-5 w-5 text-primary" />
+                <CardTitle className="text-foreground">Available Redemptions</CardTitle>
+              </div>
+              <CardDescription className="text-muted-foreground">
+                These are the partial-value offers subscribers can work toward inside this sender's ecosystem.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {config.redemptionOptions.map((option) => (
+                <div key={option.id} className="rounded-lg border border-border p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-medium text-foreground">{option.title || "Untitled Reward"}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{option.description || "Add a reward description in the sender dashboard."}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-foreground">{option.tokenCost} tokens</p>
+                      <p className="text-xs text-muted-foreground">{option.rewardValue || "Value TBD"}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          <Card className="border border-border bg-card">
+            <CardHeader>
               <CardTitle className="text-foreground">Email Content</CardTitle>
               <CardDescription className="text-muted-foreground">
                 Write your email content using HTML or plain text
@@ -169,6 +251,14 @@ export default function DemoNewCampaignPage() {
                 {previewText && (
                   <div className="text-sm text-muted-foreground mt-1">{previewText}</div>
                 )}
+              </div>
+              <div className="grid grid-cols-2 gap-px border-b border-border bg-border">
+                <div className="bg-muted px-4 py-3 text-sm text-muted-foreground">
+                  Opens earn <span className="font-medium text-foreground">{openReward} tokens</span>
+                </div>
+                <div className="bg-muted px-4 py-3 text-sm text-muted-foreground">
+                  Clicks earn <span className="font-medium text-foreground">{clickReward} tokens</span>
+                </div>
               </div>
               {/* Email Body */}
               <div className="p-6 bg-card min-h-[300px]">
