@@ -73,6 +73,7 @@ export default function RedeemPage() {
   const [loading, setLoading] = useState(true)
   const [redeeming, setRedeeming] = useState<string | null>(null)
   const [redeemed, setRedeemed] = useState<string | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -83,15 +84,33 @@ export default function RedeemPage() {
         return
       }
 
-      const { data } = await supabase
+      setIsAuthenticated(true)
+
+      const { data: subscriberByUserId } = await supabase
         .from("subscribers")
         .select("id, token_balance, first_name, flow_address, is_verified")
         .eq("user_id", user.id)
         .single()
 
-      if (data) {
-        setSubscriber(data)
+      if (subscriberByUserId) {
+        setSubscriber(subscriberByUserId)
+        setLoading(false)
+        return
       }
+
+      if (user.email) {
+        const { data: subscriberByEmail } = await supabase
+          .from("subscribers")
+          .select("id, token_balance, first_name, flow_address, is_verified")
+          .eq("email", user.email)
+          .single()
+
+        if (subscriberByEmail) {
+          await supabase.from("subscribers").update({ user_id: user.id }).eq("id", subscriberByEmail.id)
+          setSubscriber(subscriberByEmail)
+        }
+      }
+
       setLoading(false)
     }
     fetchSubscriber()
@@ -171,10 +190,18 @@ export default function RedeemPage() {
           <Card className="border border-[#E8E6E0] bg-white">
             <CardContent className="flex flex-col items-center justify-center py-16">
               <Gift className="w-12 h-12 text-[#6B6B67] mb-4" />
-              <h3 className="text-lg font-medium text-[#1C1C1A] mb-2">Sign in to redeem rewards</h3>
-              <p className="text-[#6B6B67] mb-6">You need to be logged in to access rewards</p>
+              <h3 className="text-lg font-medium text-[#1C1C1A] mb-2">
+                {isAuthenticated ? "We couldn't find your rewards profile" : "Sign in to redeem rewards"}
+              </h3>
+              <p className="text-[#6B6B67] mb-6 text-center max-w-md">
+                {isAuthenticated
+                  ? "Your account is signed in, but there is not a subscriber profile linked to it yet. Try signing up with the same email address you used for this account, or contact support to link your rewards profile."
+                  : "You need to be logged in to access rewards."}
+              </p>
               <Button asChild className="bg-[#C45C26] hover:bg-[#A34D20] text-white">
-                <Link href="/auth/login">Sign In</Link>
+                <Link href={isAuthenticated ? "/subscribe" : "/auth/login"}>
+                  {isAuthenticated ? "Create Rewards Profile" : "Sign In"}
+                </Link>
               </Button>
             </CardContent>
           </Card>
