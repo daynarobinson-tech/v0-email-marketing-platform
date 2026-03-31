@@ -20,6 +20,52 @@ Bloom reframes email as a two-sided value exchange:
 - Senders increase opens, clicks, and downstream conversions.
 - Consent and token activity can be tracked using blockchain infrastructure for stronger trust and compliance.
 
+## Business Model
+
+Bloom is designed as a subscription software product with a closed-loop token economy inside the platform.
+
+### How Bloom Makes Money
+
+- Senders subscribe to Bloom as a SaaS platform.
+- A percentage of that subscription payment is allocated toward the sender's token inventory inside Bloom.
+- That in-platform balance is what the sender sees and uses to fund subscriber rewards.
+- Senders can purchase additional token inventory whenever they want to support more campaigns or richer incentives.
+
+Bloom therefore has multiple revenue layers:
+
+- subscription revenue
+- additional in-platform token purchases
+- future premium features such as analytics, compliance tooling, and enterprise controls
+
+### Closed-Loop Token Model
+
+Bloom tokens are designed to stay inside the Bloom ecosystem:
+
+- senders use them to incentivize email engagement
+- subscribers earn them through opens and clicks
+- subscribers redeem them for discounts, credits, shipping perks, and other benefits inside the sender's ecosystem
+- the token does not need to leave Bloom to create value
+
+This keeps the system easy to understand for mainstream users while still benefiting from programmable blockchain-backed accounting.
+
+### How Sponsors And Infrastructure Partners Make Money
+
+The infrastructure and sponsor layer beneath Bloom can make money through the rails they provide:
+
+- transaction fees
+- wallet infrastructure and identity tooling
+- developer platform or API usage
+- ecosystem growth and enterprise partnerships
+
+In Bloom's model, sponsors create value by enabling:
+
+- onchain consent records
+- token allocation and token distribution events
+- wallet-linked identity and rewards
+- auditable redemption and compliance trails
+
+So Bloom monetizes the application and business outcome, while the underlying Web3 stack monetizes trust, verification, and transactions.
+
 ## Hackathon Fit
 
 Bloom is designed to fit the spirit of PL_Genesis: Frontiers of Collaboration by focusing on open coordination, digital trust, and real-world incentive design across Web2 and Web3.
@@ -54,6 +100,29 @@ This is the key product thesis:
 
 - Web2 handles usability.
 - Web3 handles trust, accounting, and programmable incentives.
+
+## Consent Ledger And Audits
+
+One of Bloom's strongest differentiators is the idea that every subscriber opt-in can be recorded to a ledger on the blockchain.
+
+That ledger can create a durable record of:
+
+- who subscribed
+- when they subscribed
+- which sender or campaign they subscribed through
+- when rewards were distributed
+- how redemption activity occurred over time
+
+This matters because audits become much stronger when Bloom can show an immutable, time-stamped trail rather than relying only on fragmented internal marketing records.
+
+For senders, this improves:
+
+- consent auditability
+- compliance confidence
+- trust in token distribution
+- internal reporting for legal, marketing, and operations teams
+
+For subscribers, it creates a clearer sense that rewards and participation are being tracked fairly and transparently.
 
 ## What The App Does Today
 
@@ -91,6 +160,7 @@ This is the key product thesis:
 - Email click tracking endpoint
 - Token balances updated based on engagement
 - Reward redemption recorded in the database
+- Long-term product direction: anchor consent and token-distribution events to an onchain ledger for stronger auditability
 
 ## Demo-Ready Story
 
@@ -101,6 +171,12 @@ The strongest demo framing for Bloom is:
 3. The sender sees improved engagement and a clearer path to conversion.
 4. The subscriber redeems rewards that create a reason to buy again.
 5. Consent, identity, and reward distribution are backed by verifiable infrastructure rather than opaque marketing software alone.
+
+That demo works especially well when framed as:
+
+- better subscriber incentives
+- better sender conversion economics
+- better auditability through blockchain-backed records
 
 ## Current Architecture
 
@@ -116,11 +192,13 @@ The strongest demo framing for Bloom is:
 - `Supabase Auth`
 - `Supabase Postgres`
 - server and browser clients through `@supabase/ssr`
+- offchain application state paired with a roadmap for onchain consent and reward records
 
 ### Web3 / Identity
 
 - `Flow FCL` for wallet connectivity
 - `World ID` for personhood verification
+- blockchain-backed consent ledger and token accounting model
 
 ### Key Data Models
 
@@ -228,5 +306,9 @@ Bloom is a Web2-native, Web3-backed email marketing platform where:
 - subscribers earn rewards from real engagement
 - rewards convert into discounts and perks that drive purchases
 - blockchain infrastructure strengthens compliance, trust, and distribution
+- every subscriber opt-in can be anchored to a blockchain ledger for audit support
+- Bloom earns through subscriptions and additional in-platform token purchases
+- infrastructure sponsors benefit from transaction, identity, and wallet-layer usage
+- tokens remain inside the Bloom ecosystem instead of behaving like an external speculative asset
 
 It is a collaboration system for incentives, not just a marketing dashboard.
