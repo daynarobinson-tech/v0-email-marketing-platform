@@ -255,6 +255,9 @@ For a hackathon demo, the cleanest flow is:
 5. Open the redeem page to show sender-specific rewards.
 6. Close by explaining how blockchain-backed consent and token distribution make the system more trustworthy and programmable.
 
+## View Demo
+https://v0-email-marketing-platform-liard.vercel.app/
+
 ## What Is Strong Today
 
 - Clear product narrative
